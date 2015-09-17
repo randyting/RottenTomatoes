@@ -31,7 +31,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     moviesTableView.insertSubview(refreshControl, atIndex: 0)
     
     reloadMovies()
-    
   }
   
   //  MARK: - Behavior
@@ -55,6 +54,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
           
           dispatch_async(dispatch_get_main_queue()){
             self.moviesTableView.reloadData()
+            JTProgressHUD.hide()
             self.refreshControl.endRefreshing()
           }
         }
@@ -62,7 +62,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     task.resume()
-
+    JTProgressHUD.show()
+    
   }
   
   //  MARK: - Table View Data Source
@@ -74,7 +75,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
       return 0
     }
   }
-
+  
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = moviesTableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! MovieTableViewCell
     
@@ -104,9 +105,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   }
   
   // MARK: - Navigation
-
-  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
   
+  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    
     let cell = sender as! UITableViewCell
     let movie = movies![moviesTableView.indexPathForCell(cell)!.row]
     
