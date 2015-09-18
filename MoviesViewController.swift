@@ -19,6 +19,12 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   
   var movies: [NSDictionary]?
   let refreshControl = UIRefreshControl()
+  var urlForAPI = NSURL(string: "https://gist.githubusercontent.com/timothy1ee/d1778ca5b944ed974db0/raw/489d812c7ceeec0ac15ab77bf7c47849f2d1eb2b/gistfile1.json")!
+  
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+  }
+  
   
   //  MARK: - Lifecycle
   
@@ -92,8 +98,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   
   func reloadMovies(){
     
-    let url = NSURL(string: "https://gist.githubusercontent.com/timothy1ee/d1778ca5b944ed974db0/raw/489d812c7ceeec0ac15ab77bf7c47849f2d1eb2b/gistfile1.json")!
-    let request = NSURLRequest(URL: url, cachePolicy: .ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 0.0)
+    let request = NSURLRequest(URL: urlForAPI, cachePolicy: .ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 0.0)
     let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { (data, response, error) -> Void in
       
       if let error = error {
@@ -150,8 +155,25 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     let urlString = movie.valueForKeyPath("posters.thumbnail") as! String
     let posterURL = NSURL(string: urlString)!
+    let posterURLRequest = NSURLRequest(URL: posterURL)
     
-    cell.posterImageView.setImageWithURL(posterURL)
+    cell.posterImageView.setImageWithURLRequest(posterURLRequest, placeholderImage: nil, success: { (request, response, image) -> Void in
+
+      dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        self.hideNetworkError()
+        cell.posterImageView.image = image
+        UIView.animateWithDuration(1) { () -> Void in
+          cell.posterImageView.alpha = 0
+          cell.posterImageView.alpha = 1
+        }
+      })
+    }) { (request, response, error) -> Void in
+      dispatch_async(dispatch_get_main_queue()){
+        self.showNetworkError()
+      }
+    }
+
+    
     
     return cell
   }
