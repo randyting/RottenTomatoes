@@ -25,7 +25,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    initializeReachabilityMonitoring()
+    /* Uncomment to show network error message anytime there is no internet connection regardless of API call */
+    // initializeReachabilityMonitoring()
     
     initializeNetworkErrorWarningLabel()
     
@@ -42,6 +43,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   
   func initializeReachabilityMonitoring(){
     AFNetworkReachabilityManager.sharedManager().startMonitoring()
+    
     AFNetworkReachabilityManager.sharedManager().setReachabilityStatusChangeBlock { (AFNetworkReachabilityStatus) -> Void in
       
       dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -57,6 +59,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         }
       })
     }
+    
   }
   
   func initializeNetworkErrorWarningLabel(){
@@ -96,6 +99,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
       if let error = error {
         
         print(error.localizedDescription)
+        dispatch_async(dispatch_get_main_queue()){
+          self.showNetworkError()
+        }
         
       } else {
         
@@ -104,6 +110,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
           self.movies = json!["movies"] as! [NSDictionary]?
           
           dispatch_async(dispatch_get_main_queue()){
+            self.hideNetworkError()
             self.moviesTableView.reloadData()
           }
         }
@@ -145,7 +152,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     let posterURL = NSURL(string: urlString)!
     
     cell.posterImageView.setImageWithURL(posterURL)
-
     
     return cell
   }
