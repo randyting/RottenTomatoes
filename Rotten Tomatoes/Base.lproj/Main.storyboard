@@ -122,11 +122,11 @@
             </objects>
             <point key="canvasLocation" x="1559" y="383"/>
         </scene>
-        <!--Item-->
+        <!--Box Office-->
         <scene sceneID="1BJ-Jo-0mT">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="bTl-Es-6GD" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="iri-qO-XtQ"/>
+                    <tabBarItem key="tabBarItem" title="Box Office" image="boxOfficeIcon" selectedImage="boxOfficeIcon" id="iri-qO-XtQ"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="loo-g0-1RW">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -259,11 +259,11 @@
             </objects>
             <point key="canvasLocation" x="1608" y="1028"/>
         </scene>
-        <!--Item-->
+        <!--DVDs-->
         <scene sceneID="Sjw-5j-fC3">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="bff-nb-a0S" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="D14-JC-sJ9"/>
+                <navigationController title="DVDs" automaticallyAdjustsScrollViewInsets="NO" id="bff-nb-a0S" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="DVDs" image="discIcon" id="D14-JC-sJ9"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="HeS-G5-hpA">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -297,4 +297,8 @@
             <point key="canvasLocation" x="165" y="694"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="boxOfficeIcon" width="24" height="24"/>
+        <image name="discIcon" width="24" height="24"/>
+    </resources>
 </document>
