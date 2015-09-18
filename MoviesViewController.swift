@@ -83,6 +83,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   func showNetworkError() {
     UIView.animateWithDuration(1, animations: { () -> Void in
       self.networkErrorLabel.alpha = 1
+      self.networkErrorLabel.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
     })
   }
   
@@ -140,13 +141,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     cell.titleLabel.text = movie["title"] as? String
     cell.synopsisLabel.text = movie["synopsis"] as? String
     
-    var urlString = movie.valueForKeyPath("posters.thumbnail") as! String
-    let range = urlString.rangeOfString(".*cloudfront.net/", options: .RegularExpressionSearch)
-    
-    if let range = range {
-      urlString = urlString.stringByReplacingCharactersInRange(range, withString: "https://content6.flixster.com/")
-    }
-    
+    let urlString = movie.valueForKeyPath("posters.thumbnail") as! String
     let posterURL = NSURL(string: urlString)!
     
     cell.posterImageView.setImageWithURL(posterURL)
