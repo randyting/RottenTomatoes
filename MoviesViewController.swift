@@ -162,12 +162,13 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
       dispatch_async(dispatch_get_main_queue(), { () -> Void in
         if response.statusCode != 0 {
           self.hideNetworkError()
-        }
-
-        cell.posterImageView.image = image
-        UIView.animateWithDuration(1) { () -> Void in
-          cell.posterImageView.alpha = 0
-          cell.posterImageView.alpha = 1
+          cell.posterImageView.image = image
+          UIView.animateWithDuration(1) { () -> Void in
+            cell.posterImageView.alpha = 0
+            cell.posterImageView.alpha = 1
+          }
+        } else {
+            cell.posterImageView.image = image
         }
       })
     }) { (request, response, error) -> Void in
