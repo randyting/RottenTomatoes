@@ -25,9 +25,9 @@
 		7037D5BE3BF5211D1F9E92C0A97FC745 /* AFNetworkActivityIndicatorManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B48E7679F3B9330A171F3BCB0A9FCE32 /* AFNetworkActivityIndicatorManager.h */; };
 		71571404E189322158EAA681A110C637 /* AFHTTPRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 170DE9421B4C9BF7B70D67E8073BC045 /* AFHTTPRequestOperation.h */; };
 		747303C75F941DEE2E784D3168290D83 /* UIImage+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = CDC71E96C1356E84D7A8C2538733A72E /* UIImage+AFNetworking.h */; };
-		74736153F0579883B8D6F17049484803 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F748C553099B082E78480173D50512C /* AFURLConnectionOperation.m */; };
+		74736153F0579883B8D6F17049484803 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F748C553099B082E78480173D50512C /* AFURLConnectionOperation.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		7538F86E8F482039118DD9C0E681C2A9 /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = A92039B3AB44268B45CC4A682699A933 /* AFURLResponseSerialization.m */; };
-		7CB860A6AC4F4A5029A4F0038C9E72EB /* UIAlertView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AE267693DF60494275678821DCD6628 /* UIAlertView+AFNetworking.m */; };
+		7CB860A6AC4F4A5029A4F0038C9E72EB /* UIAlertView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 8AE267693DF60494275678821DCD6628 /* UIAlertView+AFNetworking.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		8074A70C73199FA84F1A0CC17B9E5391 /* UIActivityIndicatorView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 0F03863336EA72093163D6B7A064BB0F /* UIActivityIndicatorView+AFNetworking.m */; };
 		84EF385AB713B89C57FA783DEEE68F3D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58D62EABC33958AF562A85775B22FBF4 /* Foundation.framework */; };
 		8554418D31724447C9F80D087C84887E /* JTProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = F426EAAEADDFA920D0DCDFE7CF3A81E7 /* JTProgressHUD.m */; };
