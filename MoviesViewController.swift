@@ -12,6 +12,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   
   //  MARK: - Storyboard Properties
   
+  @IBOutlet weak var networkErrorLabel: UILabel!
   @IBOutlet weak var moviesTableView: UITableView!
   
   //  MARK: - Properties
@@ -24,6 +25,10 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    initializeReachabilityMonitoring()
+    
+    initializeNetworkErrorWarningLabel()
+    
     moviesTableView.dataSource = self
     moviesTableView.delegate = self
     
@@ -35,10 +40,53 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   
   //  MARK: - Behavior
   
+  func initializeReachabilityMonitoring(){
+    AFNetworkReachabilityManager.sharedManager().startMonitoring()
+    AFNetworkReachabilityManager.sharedManager().setReachabilityStatusChangeBlock { (AFNetworkReachabilityStatus) -> Void in
+      
+      dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        switch (AFNetworkReachabilityStatus){
+        case .NotReachable:
+          self.showNetworkError()
+        case .ReachableViaWiFi:
+          self.hideNetworkError()
+        case .ReachableViaWWAN:
+          self.hideNetworkError()
+        case .Unknown:
+          self.showNetworkError()
+        }
+      })
+    }
+  }
+  
+  func initializeNetworkErrorWarningLabel(){
+    let warningIcon = UIImage(named: "warningIcon")!
+    let scaledWarningIcon = UIImage(CIImage: CIImage(image: warningIcon)!, scale: 2.5, orientation: warningIcon.imageOrientation)
+    
+    let attachment = NSTextAttachment()
+    attachment.image = scaledWarningIcon
+    let warningIconAttributedString = NSAttributedString(attachment: attachment)
+    let warningString = NSMutableAttributedString()
+    warningString.appendAttributedString(warningIconAttributedString)
+    warningString.appendAttributedString(NSAttributedString(string: " Network Error"))
+    networkErrorLabel.attributedText = warningString
+    
+    networkErrorLabel.alpha = 0
+  }
+  
+  func hideNetworkError() {
+    UIView.animateWithDuration(1, animations: { () -> Void in
+      self.networkErrorLabel.alpha = 0
+    })
+  }
+  
+  func showNetworkError() {
+    UIView.animateWithDuration(1, animations: { () -> Void in
+      self.networkErrorLabel.alpha = 1
+    })
+  }
   
   func reloadMovies(){
-    
-    // TODO: Hide network error message here.
     
     let url = NSURL(string: "https://gist.githubusercontent.com/timothy1ee/d1778ca5b944ed974db0/raw/489d812c7ceeec0ac15ab77bf7c47849f2d1eb2b/gistfile1.json")!
     let request = NSURLRequest(URL: url, cachePolicy: .ReloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 0.0)
@@ -47,7 +95,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
       if let error = error {
         
         print(error.localizedDescription)
-        // TODO: Show error message here.
         
       } else {
         
@@ -69,6 +116,10 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     task.resume()
     JTProgressHUD.show()
     
+  }
+  
+  func hasConnectivity() -> Bool {
+    return AFNetworkReachabilityManager.sharedManager().reachable
   }
   
   //  MARK: - Table View Data Source
@@ -99,6 +150,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     let posterURL = NSURL(string: urlString)!
     
     cell.posterImageView.setImageWithURL(posterURL)
+
     
     return cell
   }

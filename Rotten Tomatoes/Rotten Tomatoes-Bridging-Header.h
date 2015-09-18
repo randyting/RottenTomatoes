@@ -4,3 +4,4 @@
 
 #import "UIImageView+AFNetworking.h"
 #import "JTProgressHUD.h"
+#import "AFNetworking.h"
