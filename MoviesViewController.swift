@@ -158,9 +158,12 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     let posterURLRequest = NSURLRequest(URL: posterURL)
     
     cell.posterImageView.setImageWithURLRequest(posterURLRequest, placeholderImage: nil, success: { (request, response, image) -> Void in
-
+      
       dispatch_async(dispatch_get_main_queue(), { () -> Void in
-        self.hideNetworkError()
+        if response.statusCode != 0 {
+          self.hideNetworkError()
+        }
+
         cell.posterImageView.image = image
         UIView.animateWithDuration(1) { () -> Void in
           cell.posterImageView.alpha = 0
@@ -172,8 +175,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         self.showNetworkError()
       }
     }
-
-    
     
     return cell
   }
@@ -188,12 +189,14 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     
-    let cell = sender as! UITableViewCell
+    let cell = sender as! MovieTableViewCell
     let movie = movies![moviesTableView.indexPathForCell(cell)!.row]
     
     let detailsViewController = segue.destinationViewController as! MovieDetailsViewController
     
     detailsViewController.movie = movie
+    detailsViewController.thumbnailImage = cell.posterImageView.image
   }
   
 }
+
