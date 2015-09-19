@@ -22,6 +22,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   var filteredMovies: [NSDictionary]?
   let refreshControl = UIRefreshControl()
   var urlForAPI = NSURL(string: "https://gist.githubusercontent.com/timothy1ee/d1778ca5b944ed974db0/raw/489d812c7ceeec0ac15ab77bf7c47849f2d1eb2b/gistfile1.json")!
+  var navBarHairlineImageView: UIImageView?
   
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
@@ -30,11 +31,18 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   
   //  MARK: - Lifecycle
   
+  override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    navBarHairlineImageView?.hidden = true
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
     /* Uncomment to show network error message anytime there is no internet connection regardless of API call */
     // initializeReachabilityMonitoring()
+    
+    navBarHairlineImageView = self.findHairlineImageViewUnder(navigationController?.navigationBar)
     
     initializeNetworkErrorWarningLabel()
     
@@ -51,7 +59,22 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     reloadMovies()
   }
   
-  //  MARK: - Behavior
+  //  MARK: - Helper
+  
+  func findHairlineImageViewUnder(view: UIView?) -> UIImageView? {
+    if view is UIImageView && view!.bounds.size.height <= 1.0 {
+      return view as! UIImageView?
+    }
+    for subview in view!.subviews {
+      let imageView = self.findHairlineImageViewUnder(subview)
+      if let imageView  = imageView {
+        return imageView
+      }
+    }
+    return nil
+  }
+  
+  //  MARK: - Initialization
   
   func initializeReachabilityMonitoring(){
     AFNetworkReachabilityManager.sharedManager().startMonitoring()
