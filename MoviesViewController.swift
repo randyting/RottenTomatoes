@@ -8,16 +8,18 @@
 
 import UIKit
 
-class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
+class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate{
   
   //  MARK: - Storyboard Properties
   
+  @IBOutlet weak var searchBar: UISearchBar!
   @IBOutlet weak var networkErrorLabel: UILabel!
   @IBOutlet weak var moviesTableView: UITableView!
   
   //  MARK: - Properties
   
   var movies: [NSDictionary]?
+  var filteredMovies: [NSDictionary]?
   let refreshControl = UIRefreshControl()
   var urlForAPI = NSURL(string: "https://gist.githubusercontent.com/timothy1ee/d1778ca5b944ed974db0/raw/489d812c7ceeec0ac15ab77bf7c47849f2d1eb2b/gistfile1.json")!
   
@@ -38,6 +40,10 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     moviesTableView.dataSource = self
     moviesTableView.delegate = self
+    moviesTableView.setContentOffset(CGPointMake(0, 44), animated: true)
+    
+    searchBar.delegate = self
+    
     
     refreshControl.addTarget(self, action: "reloadMovies", forControlEvents: UIControlEvents.ValueChanged)
     moviesTableView.insertSubview(refreshControl, atIndex: 0)
@@ -113,6 +119,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let json = try? NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions(rawValue: 0)) as? NSDictionary
         if let json = json {
           self.movies = json!["movies"] as! [NSDictionary]?
+          self.filteredMovies = self.movies
           
           dispatch_async(dispatch_get_main_queue()){
             self.hideNetworkError()
@@ -135,11 +142,12 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     return AFNetworkReachabilityManager.sharedManager().reachable
   }
   
+  
   //  MARK: - Table View Data Source
   
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    if let movies = movies {
-      return movies.count
+    if let filteredMovies = filteredMovies {
+      return filteredMovies.count
     } else {
       return 0
     }
@@ -148,7 +156,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = moviesTableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! MovieTableViewCell
     
-    let movie = movies![indexPath.row] as NSDictionary
+    let movie = filteredMovies![indexPath.row] as NSDictionary
     
     cell.titleLabel.text = movie["title"] as? String
     cell.synopsisLabel.text = movie["synopsis"] as? String
@@ -168,13 +176,13 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             cell.posterImageView.alpha = 1
           }
         } else {
-            cell.posterImageView.image = image
+          cell.posterImageView.image = image
         }
       })
-    }) { (request, response, error) -> Void in
-      dispatch_async(dispatch_get_main_queue()){
-        self.showNetworkError()
-      }
+      }) { (request, response, error) -> Void in
+        dispatch_async(dispatch_get_main_queue()){
+          self.showNetworkError()
+        }
     }
     
     return cell
@@ -186,6 +194,26 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     tableView.deselectRowAtIndexPath(indexPath, animated: true)
   }
   
+  // MARK: - Search Bar Delegate
+  
+  func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+    if searchText == "" {
+      filteredMovies = movies
+      searchBar.performSelector("resignFirstResponder", withObject: nil, afterDelay: 0)
+    } else {
+      filteredMovies = movies?.filter({ (movie: NSDictionary) -> Bool in
+        let stringMatch = (movie["title"] as! String).rangeOfString(searchText)
+        return (stringMatch != nil)
+      })
+    }
+    
+    moviesTableView.reloadData()
+  }
+  
+  func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+      searchBar.resignFirstResponder()
+  }
+
   // MARK: - Navigation
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
