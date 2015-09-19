@@ -15,6 +15,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   @IBOutlet weak var searchBar: UISearchBar!
   @IBOutlet weak var networkErrorLabel: UILabel!
   @IBOutlet weak var moviesTableView: UITableView!
+  @IBOutlet weak var viewTypeSelectionToolBar: UIToolbar!
   
   //  MARK: - Properties
   
@@ -49,6 +50,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     moviesTableView.dataSource = self
     moviesTableView.delegate = self
     moviesTableView.setContentOffset(CGPointMake(0, searchBar.frame.size.height), animated: true)
+    moviesTableView.frame.origin.y += viewTypeSelectionToolBar.frame.height
+    moviesTableView.frame.size.height -= viewTypeSelectionToolBar.frame.height
+    
     
     searchBar.delegate = self
     

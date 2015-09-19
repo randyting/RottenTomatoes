@@ -78,8 +78,8 @@
                                             <rect key="frame" x="99" y="8" width="121" height="29"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <segments>
-                                                <segment title="First"/>
-                                                <segment title="Second"/>
+                                                <segment title="List"/>
+                                                <segment title="Grid"/>
                                             </segments>
                                         </segmentedControl>
                                     </barButtonItem>
@@ -95,6 +95,7 @@
                         <outlet property="moviesTableView" destination="szf-Ap-5SD" id="uPJ-u5-hhy"/>
                         <outlet property="networkErrorLabel" destination="rKA-nf-NsF" id="D2q-ed-B7k"/>
                         <outlet property="searchBar" destination="QY7-gp-eoW" id="3O6-Mj-kKo"/>
+                        <outlet property="viewTypeSelectionToolBar" destination="Wzt-Ju-cn2" id="IIU-2z-Twz"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
