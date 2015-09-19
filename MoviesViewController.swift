@@ -40,7 +40,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     moviesTableView.dataSource = self
     moviesTableView.delegate = self
-    moviesTableView.setContentOffset(CGPointMake(0, 44), animated: true)
+    moviesTableView.setContentOffset(CGPointMake(0, searchBar.frame.size.height), animated: true)
     
     searchBar.delegate = self
     
@@ -91,14 +91,23 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   
   func hideNetworkError() {
     UIView.animateWithDuration(1, animations: { () -> Void in
+      if self.networkErrorLabel.alpha == 1 {
+        self.moviesTableView.frame.origin.y -= self.networkErrorLabel.frame.height
+        self.moviesTableView.frame.size.height += self.networkErrorLabel.frame.height
+      }
       self.networkErrorLabel.alpha = 0
     })
   }
   
   func showNetworkError() {
     UIView.animateWithDuration(1, animations: { () -> Void in
+      if self.networkErrorLabel.alpha == 0 {
+        self.moviesTableView.frame.origin.y += self.networkErrorLabel.frame.height
+        self.moviesTableView.frame.size.height -= self.networkErrorLabel.frame.height
+      }
       self.networkErrorLabel.alpha = 1
       self.networkErrorLabel.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
+
     })
   }
   
