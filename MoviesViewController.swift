@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate{
+class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UICollectionViewDataSource, UICollectionViewDelegate{
   
   //  MARK: - Storyboard Properties
   
@@ -16,14 +16,19 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   @IBOutlet weak var networkErrorLabel: UILabel!
   @IBOutlet weak var moviesTableView: UITableView!
   @IBOutlet weak var viewTypeSelectionToolBar: UIToolbar!
+  @IBOutlet weak var moviesCollectionView: UICollectionView!
   
   //  MARK: - Properties
   
   var movies: [NSDictionary]?
   var filteredMovies: [NSDictionary]?
   let refreshControl = UIRefreshControl()
+  let gridRefreshControl = UIRefreshControl()
   var urlForAPI = NSURL(string: "https://gist.githubusercontent.com/timothy1ee/d1778ca5b944ed974db0/raw/489d812c7ceeec0ac15ab77bf7c47849f2d1eb2b/gistfile1.json")!
   var navBarHairlineImageView: UIImageView?
+  var gridSearchBar = UISearchBar()
+  var searchValue = ""
+  
   
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
@@ -47,18 +52,27 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     initializeNetworkErrorWarningLabel()
     
-    moviesTableView.dataSource = self
-    moviesTableView.delegate = self
-    moviesTableView.setContentOffset(CGPointMake(0, searchBar.frame.size.height), animated: true)
-    moviesTableView.frame.origin.y += viewTypeSelectionToolBar.frame.height
-    moviesTableView.frame.size.height -= viewTypeSelectionToolBar.frame.height
-    
-    
     searchBar.delegate = self
     
+    moviesTableView.dataSource = self
+    moviesTableView.delegate = self
+    moviesTableView.setContentOffset(CGPointMake(0, searchBar.frame.size.height), animated: false)
+    moviesTableView.frame.size.height -= self.tabBarController!.tabBar.frame.height
+    
+    gridSearchBar.frame = CGRectMake(0, 0, moviesCollectionView.frame.width, searchBar.frame.height)
+    moviesCollectionView.addSubview(gridSearchBar)
+    gridSearchBar.delegate = self
+    
+    moviesCollectionView.dataSource = self
+    moviesCollectionView.delegate = self
+    moviesCollectionView.frame.size.height -= self.tabBarController!.tabBar.frame.height
+    moviesCollectionView.setContentOffset(CGPointMake(0, gridSearchBar.frame.size.height), animated: false)
+    moviesCollectionView.hidden = true
     
     refreshControl.addTarget(self, action: "reloadMovies", forControlEvents: UIControlEvents.ValueChanged)
     moviesTableView.insertSubview(refreshControl, atIndex: 0)
+    gridRefreshControl.addTarget(self, action: "reloadMovies", forControlEvents: UIControlEvents.ValueChanged)
+    moviesCollectionView.insertSubview(gridRefreshControl, atIndex: 0)
     
     reloadMovies()
   }
@@ -76,6 +90,33 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
       }
     }
     return nil
+  }
+  
+  func setPosterImageForImageView(imageView: UIImageView, movie: NSDictionary) {
+    let urlString = movie.valueForKeyPath("posters.thumbnail") as! String
+    let posterURL = NSURL(string: urlString)!
+    let posterURLRequest = NSURLRequest(URL: posterURL)
+    
+    imageView.setImageWithURLRequest(posterURLRequest, placeholderImage: nil, success: { (request, response, image) -> Void in
+      
+      dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        if response.statusCode != 0 {
+          self.hideNetworkError()
+          imageView.image = image
+          UIView.animateWithDuration(1) { () -> Void in
+            imageView.alpha = 0
+            imageView.alpha = 1
+          }
+        } else {
+          imageView.image = image
+        }
+      })
+      }) { (request, response, error) -> Void in
+        dispatch_async(dispatch_get_main_queue()){
+          self.showNetworkError()
+        }
+    }
+    
   }
   
   //  MARK: - Initialization
@@ -116,6 +157,22 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     networkErrorLabel.alpha = 0
   }
   
+  //  MARK: - Behavior
+  
+  @IBAction func viewTypeChanged(sender: AnyObject) {
+    let viewTypeControl = sender as! UISegmentedControl
+    switch viewTypeControl.selectedSegmentIndex {
+    case 0:
+      moviesTableView.hidden = false
+      moviesCollectionView.hidden = true
+    case 1:
+      moviesTableView.hidden = true
+      moviesCollectionView.hidden = false
+    default:
+      assert(true, "Tried to access view type that does not exist.")
+    }
+  }
+  
   func hideNetworkError() {
     UIView.animateWithDuration(1, animations: { () -> Void in
       if self.networkErrorLabel.alpha == 1 {
@@ -134,7 +191,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
       }
       self.networkErrorLabel.alpha = 1
       self.networkErrorLabel.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
-
+      
     })
   }
   
@@ -160,12 +217,14 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
           dispatch_async(dispatch_get_main_queue()){
             self.hideNetworkError()
             self.moviesTableView.reloadData()
+            self.moviesCollectionView.reloadData()
           }
         }
       }
       dispatch_async(dispatch_get_main_queue()){
         JTProgressHUD.hide()
         self.refreshControl.endRefreshing()
+        self.gridRefreshControl.endRefreshing()
       }
     }
     
@@ -197,29 +256,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     cell.titleLabel.text = movie["title"] as? String
     cell.synopsisLabel.text = movie["synopsis"] as? String
     
-    let urlString = movie.valueForKeyPath("posters.thumbnail") as! String
-    let posterURL = NSURL(string: urlString)!
-    let posterURLRequest = NSURLRequest(URL: posterURL)
-    
-    cell.posterImageView.setImageWithURLRequest(posterURLRequest, placeholderImage: nil, success: { (request, response, image) -> Void in
-      
-      dispatch_async(dispatch_get_main_queue(), { () -> Void in
-        if response.statusCode != 0 {
-          self.hideNetworkError()
-          cell.posterImageView.image = image
-          UIView.animateWithDuration(1) { () -> Void in
-            cell.posterImageView.alpha = 0
-            cell.posterImageView.alpha = 1
-          }
-        } else {
-          cell.posterImageView.image = image
-        }
-      })
-      }) { (request, response, error) -> Void in
-        dispatch_async(dispatch_get_main_queue()){
-          self.showNetworkError()
-        }
-    }
+    self.setPosterImageForImageView(cell.posterImageView, movie: movie)
     
     return cell
   }
@@ -233,7 +270,11 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   // MARK: - Search Bar Delegate
   
   func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-    if searchText == "" {
+    searchValue = searchText
+    gridSearchBar.text = searchText
+    self.searchBar.text = searchText
+    
+    if searchValue == "" {
       filteredMovies = movies
       searchBar.performSelector("resignFirstResponder", withObject: nil, afterDelay: 0)
     } else {
@@ -244,23 +285,75 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     }
     
     moviesTableView.reloadData()
+    moviesCollectionView.reloadData()
   }
   
   func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-      searchBar.resignFirstResponder()
+    searchBar.resignFirstResponder()
   }
-
+  
+  //  MARK: - Collection View Delegate
+  
+  func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    collectionView.deselectItemAtIndexPath(indexPath, animated: true)
+  }
+  
+  //  MARK: - Collection View Datasource
+  
+  func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    if let filteredMovies = filteredMovies {
+      return filteredMovies.count
+    } else {
+      return 0
+    }
+  }
+  
+  func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    return 1
+  }
+  
+  func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    let cell = collectionView.dequeueReusableCellWithReuseIdentifier("MovieCollectionCell", forIndexPath: indexPath) as! MoviesCollectionViewCell
+    
+    let movie = filteredMovies![indexPath.row] as NSDictionary
+    
+    self.setPosterImageForImageView(cell.posterImage, movie: movie)
+    
+    return cell
+  }
+  
+  func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
+    switch kind {
+    case UICollectionElementKindSectionHeader:
+      let headerView =
+      collectionView.dequeueReusableSupplementaryViewOfKind(kind,
+        withReuseIdentifier: "GridHeaderView",
+        forIndexPath: indexPath)
+      return headerView
+    default:
+      assert(false, "Unexpected element kind")
+    }
+  }
+  
   // MARK: - Navigation
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    
-    let cell = sender as! MovieTableViewCell
-    let movie = movies![moviesTableView.indexPathForCell(cell)!.row]
+    var movie: NSDictionary?
     
     let detailsViewController = segue.destinationViewController as! MovieDetailsViewController
     
+    if (sender as? MovieTableViewCell != nil) {
+      let cell = sender as! MovieTableViewCell
+      movie = movies![moviesTableView.indexPathForCell(cell)!.row]
+      detailsViewController.thumbnailImage = cell.posterImageView.image
+    } else if (sender as? MoviesCollectionViewCell != nil){
+      let cell = sender as! MoviesCollectionViewCell
+      movie = movies![moviesCollectionView.indexPathForCell(cell)!.row]
+      detailsViewController.thumbnailImage = cell.posterImage.image
+    }
+
     detailsViewController.movie = movie
-    detailsViewController.thumbnailImage = cell.posterImageView.image
+
   }
   
 }
