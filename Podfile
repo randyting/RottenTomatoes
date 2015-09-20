@@ -1,10 +1,11 @@
 # Uncomment this line to define a global platform for your project
-# platform :ios, '6.0'
+platform :ios, '9.0'
+use_frameworks!
 
 target 'Rotten Tomatoes' do
 
-pod "AFNetworking"
-pod "JTProgressHUD"
+pod "AFNetworking", '~>2.6.0'
+pod "JTProgressHUD", '~>1.0.3' 
 
 end
 

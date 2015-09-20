@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import AFNetworking
+import JTProgressHUD
 
 class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UICollectionViewDataSource, UICollectionViewDelegate{
   
@@ -305,7 +307,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     moviesTableView.reloadData()
     moviesCollectionView.reloadData()
-    //    searchBar.becomeFirstResponder()
+    searchBar.becomeFirstResponder()
     
   }
   
