@@ -368,11 +368,11 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     if (sender as? MovieTableViewCell != nil) {
       let cell = sender as! MovieTableViewCell
-      movie = movies![moviesTableView.indexPathForCell(cell)!.row]
+      movie = filteredMovies![moviesTableView.indexPathForCell(cell)!.row]
       detailsViewController.thumbnailImage = cell.posterImageView.image
     } else if (sender as? MoviesCollectionViewCell != nil){
       let cell = sender as! MoviesCollectionViewCell
-      movie = movies![moviesCollectionView.indexPathForCell(cell)!.row]
+      movie = filteredMovies![moviesCollectionView.indexPathForCell(cell)!.row]
       detailsViewController.thumbnailImage = cell.posterImage.image
     }
     
