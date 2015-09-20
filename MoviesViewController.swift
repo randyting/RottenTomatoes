@@ -191,6 +191,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
       if self.networkErrorLabel.alpha == 1 {
         self.moviesTableView.frame.origin.y -= self.networkErrorLabel.frame.height
         self.moviesTableView.frame.size.height += self.networkErrorLabel.frame.height
+        self.moviesCollectionView.frame.origin.y -= self.networkErrorLabel.frame.height
+        self.moviesCollectionView.frame.size.height += self.networkErrorLabel.frame.height
       }
       self.networkErrorLabel.alpha = 0
     })
@@ -201,6 +203,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
       if self.networkErrorLabel.alpha == 0 {
         self.moviesTableView.frame.origin.y += self.networkErrorLabel.frame.height
         self.moviesTableView.frame.size.height -= self.networkErrorLabel.frame.height
+        self.moviesCollectionView.frame.origin.y += self.networkErrorLabel.frame.height
+        self.moviesCollectionView.frame.size.height -= self.networkErrorLabel.frame.height
       }
       self.networkErrorLabel.alpha = 1
       self.networkErrorLabel.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.5)
