@@ -16,6 +16,7 @@
 		6F692A951BA9FD0D00829629 /* MoviesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F692A941BA9FD0D00829629 /* MoviesViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		6F692A9A1BAA12DE00829629 /* MovieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F692A991BAA12DE00829629 /* MovieTableViewCell.swift */; settings = {ASSET_TAGS = (); }; };
 		6F8B11901BAE3C9800C11EE0 /* MoviesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8B118F1BAE3C9800C11EE0 /* MoviesCollectionViewCell.swift */; settings = {ASSET_TAGS = (); }; };
+		6FD91A441BAF6C9E0039C0FB /* DraggableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD91A431BAF6C9E0039C0FB /* DraggableView.swift */; settings = {ASSET_TAGS = (); }; };
 		6FECA8321BABEED100512B31 /* DVDViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FECA8311BABEED100512B31 /* DVDViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		6FECA8341BABF05E00512B31 /* BoxOfficeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FECA8331BABF05E00512B31 /* BoxOfficeViewController.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
@@ -32,6 +33,7 @@
 		6F692A941BA9FD0D00829629 /* MoviesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MoviesViewController.swift; path = ../MoviesViewController.swift; sourceTree = "<group>"; };
 		6F692A991BAA12DE00829629 /* MovieTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieTableViewCell.swift; sourceTree = "<group>"; };
 		6F8B118F1BAE3C9800C11EE0 /* MoviesCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoviesCollectionViewCell.swift; sourceTree = "<group>"; };
+		6FD91A431BAF6C9E0039C0FB /* DraggableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DraggableView.swift; sourceTree = "<group>"; };
 		6FECA8311BABEED100512B31 /* DVDViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DVDViewController.swift; sourceTree = "<group>"; };
 		6FECA8331BABF05E00512B31 /* BoxOfficeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoxOfficeViewController.swift; sourceTree = "<group>"; };
 		840C18760F66AD8DFBEA3083 /* Pods_Rotten_Tomatoes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Rotten_Tomatoes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -98,6 +100,7 @@
 				6F63F7631BAA2CA200E0D3F5 /* MovieDetailsViewController.swift */,
 				6F692A991BAA12DE00829629 /* MovieTableViewCell.swift */,
 				6F8B118F1BAE3C9800C11EE0 /* MoviesCollectionViewCell.swift */,
+				6FD91A431BAF6C9E0039C0FB /* DraggableView.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -236,6 +239,7 @@
 			files = (
 				6F63F7641BAA2CA200E0D3F5 /* MovieDetailsViewController.swift in Sources */,
 				6F692A811BA9E02300829629 /* AppDelegate.swift in Sources */,
+				6FD91A441BAF6C9E0039C0FB /* DraggableView.swift in Sources */,
 				6FECA8341BABF05E00512B31 /* BoxOfficeViewController.swift in Sources */,
 				6FECA8321BABEED100512B31 /* DVDViewController.swift in Sources */,
 				6F692A951BA9FD0D00829629 /* MoviesViewController.swift in Sources */,

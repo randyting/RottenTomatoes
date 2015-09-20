@@ -33,6 +33,7 @@ class MovieDetailsViewController: UIViewController {
     self.title = movie["title"] as? String
     titleLabel.text = movie["title"] as? String
     synopsisLabel.text =  movie["synopsis"] as? String
+    synopsisLabel.sizeToFit()
   }
   
   func setupBackgroundImage(){
