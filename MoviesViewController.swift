@@ -28,6 +28,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   var navBarHairlineImageView: UIImageView?
   var gridSearchBar = UISearchBar()
   var searchValue = ""
+  var gridSearchIsActive = false
   
   
   required init?(coder aDecoder: NSCoder) {
@@ -66,15 +67,16 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     moviesCollectionView.dataSource = self
     moviesCollectionView.delegate = self
     moviesCollectionView.frame.size.height -= self.tabBarController!.tabBar.frame.height
-    moviesCollectionView.setContentOffset(CGPointMake(0, gridSearchBar.frame.size.height), animated: false)
     moviesCollectionView.hidden = true
     
     refreshControl.addTarget(self, action: "reloadMovies", forControlEvents: UIControlEvents.ValueChanged)
     moviesTableView.insertSubview(refreshControl, atIndex: 0)
     gridRefreshControl.addTarget(self, action: "reloadMovies", forControlEvents: UIControlEvents.ValueChanged)
     moviesCollectionView.insertSubview(gridRefreshControl, atIndex: 0)
+    moviesCollectionView.alwaysBounceVertical = true;
     
     reloadMovies()
+    moviesCollectionView.setContentOffset(CGPointMake(0, gridSearchBar.frame.size.height), animated: false)
   }
   
   //  MARK: - Helper
@@ -117,6 +119,15 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
+  }
+  
+  func filterMoviesWithSearchText(searchText: String) -> [NSDictionary] {
+    let filteredMovies = self.movies!.filter({ (movie: NSDictionary) -> Bool in
+      let stringMatch = (movie["title"] as! String).rangeOfString(searchText)
+      return (stringMatch != nil)
+    }) as [NSDictionary]
+    
+    return filteredMovies
   }
   
   //  MARK: - Initialization
@@ -212,12 +223,20 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let json = try? NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions(rawValue: 0)) as? NSDictionary
         if let json = json {
           self.movies = json!["movies"] as! [NSDictionary]?
-          self.filteredMovies = self.movies
+          if self.searchValue.characters.count == 0 {
+            self.filteredMovies = self.movies
+          } else {
+            self.filteredMovies = self.filterMoviesWithSearchText(self.searchValue)
+          }
+          
           
           dispatch_async(dispatch_get_main_queue()){
             self.hideNetworkError()
             self.moviesTableView.reloadData()
             self.moviesCollectionView.reloadData()
+            if self.gridSearchIsActive {
+              self.gridSearchBar.becomeFirstResponder()
+            }
           }
         }
       }
@@ -276,19 +295,22 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     if searchValue == "" {
       filteredMovies = movies
+      gridSearchIsActive = false
       searchBar.performSelector("resignFirstResponder", withObject: nil, afterDelay: 0)
     } else {
-      filteredMovies = movies?.filter({ (movie: NSDictionary) -> Bool in
-        let stringMatch = (movie["title"] as! String).rangeOfString(searchText)
-        return (stringMatch != nil)
-      })
+      gridSearchIsActive = true
+      filteredMovies = filterMoviesWithSearchText(searchValue)
     }
+    
     
     moviesTableView.reloadData()
     moviesCollectionView.reloadData()
+    //    searchBar.becomeFirstResponder()
+    
   }
   
   func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+    gridSearchIsActive = false
     searchBar.resignFirstResponder()
   }
   
@@ -351,9 +373,9 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
       movie = movies![moviesCollectionView.indexPathForCell(cell)!.row]
       detailsViewController.thumbnailImage = cell.posterImage.image
     }
-
+    
     detailsViewController.movie = movie
-
+    
   }
   
 }
