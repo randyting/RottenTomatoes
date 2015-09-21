@@ -43,6 +43,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   override func viewWillAppear(animated: Bool) {
     super.viewWillAppear(animated)
     navBarHairlineImageView?.hidden = true
+    AppearanceHelper.setDarkThemeColors()
   }
   
   override func viewDidLoad() {
@@ -80,6 +81,11 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     reloadMovies()
     moviesCollectionView.setContentOffset(CGPointMake(0, gridSearchBar.frame.size.height), animated: false)
+    
+    AppearanceHelper.setDarkThemeColors()
+    AppearanceHelper.resetViews()
+    
+
   }
   
   //  MARK: - Helper
@@ -334,6 +340,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   func searchBarSearchButtonClicked(searchBar: UISearchBar) {
     gridSearchIsActive = false
     searchBar.resignFirstResponder()
+    searchBar.tintColor = UIColor.blackColor()
   }
   
   //  MARK: - Collection View Delegate

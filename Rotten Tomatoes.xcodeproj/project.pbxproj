@@ -12,6 +12,7 @@
 		6F5AD26E1BAF9476009FE25D /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F692A8C1BA9E02300829629 /* Info.plist */; settings = {ASSET_TAGS = (); }; };
 		6F5AD2701BAF9572009FE25D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F5AD26F1BAF9572009FE25D /* LaunchScreen.storyboard */; settings = {ASSET_TAGS = (); }; };
 		6F5AD2721BAF957B009FE25D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F5AD2711BAF957B009FE25D /* Main.storyboard */; settings = {ASSET_TAGS = (); }; };
+		6F5AD2741BAF9685009FE25D /* AppearanceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5AD2731BAF9685009FE25D /* AppearanceHelper.swift */; settings = {ASSET_TAGS = (); }; };
 		6F692A811BA9E02300829629 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F692A801BA9E02300829629 /* AppDelegate.swift */; };
 		6F692A881BA9E02300829629 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F692A871BA9E02300829629 /* Assets.xcassets */; };
 		6F692A951BA9FD0D00829629 /* MoviesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F692A941BA9FD0D00829629 /* MoviesViewController.swift */; settings = {ASSET_TAGS = (); }; };
@@ -27,6 +28,7 @@
 		6F5AD26A1BAF93E4009FE25D /* MovieDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MovieDetailsViewController.swift; path = Controllers/MovieDetailsViewController.swift; sourceTree = "<group>"; };
 		6F5AD26F1BAF9572009FE25D /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Application/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6F5AD2711BAF957B009FE25D /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Controllers/Main.storyboard; sourceTree = "<group>"; };
+		6F5AD2731BAF9685009FE25D /* AppearanceHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppearanceHelper.swift; path = Library/AppearanceHelper.swift; sourceTree = "<group>"; };
 		6F692A7D1BA9E02300829629 /* Rotten Tomatoes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rotten Tomatoes.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F692A801BA9E02300829629 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = Application/AppDelegate.swift; sourceTree = "<group>"; };
 		6F692A871BA9E02300829629 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Resources/Assets.xcassets; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 		6F5AD2691BAF91E1009FE25D /* Library */ = {
 			isa = PBXGroup;
 			children = (
+				6F5AD2731BAF9685009FE25D /* AppearanceHelper.swift */,
 			);
 			name = Library;
 			sourceTree = "<group>";
@@ -273,6 +276,7 @@
 			files = (
 				6F5AD26B1BAF93E4009FE25D /* MovieDetailsViewController.swift in Sources */,
 				6F692A811BA9E02300829629 /* AppDelegate.swift in Sources */,
+				6F5AD2741BAF9685009FE25D /* AppearanceHelper.swift in Sources */,
 				6FD91A441BAF6C9E0039C0FB /* DraggableView.swift in Sources */,
 				6FECA8341BABF05E00512B31 /* BoxOfficeViewController.swift in Sources */,
 				6FECA8321BABEED100512B31 /* DVDViewController.swift in Sources */,

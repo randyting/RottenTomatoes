@@ -21,6 +21,10 @@ class MovieDetailsViewController: UIViewController {
   
   //  MARK: - Lifecycle
   
+  override func viewWillAppear(animated: Bool) {
+    AppearanceHelper.setDarkThemeColors()
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     initializeText()
