@@ -30,7 +30,7 @@ Time spent: `25 hours`
 - [x] User can drag window containing title and synopsis up and down.
 
 ### Walkthrough
-###![Video Walkthrough](http://i.imgur.com/9d4fXIm.gif)
+###![Video Walkthrough](150920_RottenTomatoes_Walkthrough.gif)
 
 Credits
 ---------
@@ -38,3 +38,9 @@ Credits
 * [AFNetworking](https://github.com/AFNetworking/AFNetworking)
 * [JTProgressHUD](https://github.com/kubatru/JTProgressHUD)
 * [iconmonstr](http://iconmonstr.com/)
+* [LiceCap](http://www.cockos.com/licecap/)
+
+License
+--------
+This project is licensed under the terms of the MIT license.
+
