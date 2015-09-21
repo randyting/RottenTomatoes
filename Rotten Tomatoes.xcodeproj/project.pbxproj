@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		555ABF229A6C31980DD4A4EA /* Pods_Rotten_Tomatoes.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 840C18760F66AD8DFBEA3083 /* Pods_Rotten_Tomatoes.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		6F5AD26B1BAF93E4009FE25D /* MovieDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5AD26A1BAF93E4009FE25D /* MovieDetailsViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		6F5AD26E1BAF9476009FE25D /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F692A8C1BA9E02300829629 /* Info.plist */; settings = {ASSET_TAGS = (); }; };
 		6F5AD2701BAF9572009FE25D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F5AD26F1BAF9572009FE25D /* LaunchScreen.storyboard */; settings = {ASSET_TAGS = (); }; };
 		6F5AD2721BAF957B009FE25D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F5AD2711BAF957B009FE25D /* Main.storyboard */; settings = {ASSET_TAGS = (); }; };
 		6F5AD2741BAF9685009FE25D /* AppearanceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F5AD2731BAF9685009FE25D /* AppearanceHelper.swift */; settings = {ASSET_TAGS = (); }; };
@@ -213,7 +212,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6F5AD2701BAF9572009FE25D /* LaunchScreen.storyboard in Resources */,
-				6F5AD26E1BAF9476009FE25D /* Info.plist in Resources */,
 				6F692A881BA9E02300829629 /* Assets.xcassets in Resources */,
 				6F5AD2721BAF957B009FE25D /* Main.storyboard in Resources */,
 			);
