@@ -56,6 +56,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     initializeNetworkErrorWarningLabel()
     
     searchBar.delegate = self
+    setReturnKeyToDoneForSearchBar(searchBar)
     
     moviesTableView.dataSource = self
     moviesTableView.delegate = self
@@ -82,6 +83,22 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   }
   
   //  MARK: - Helper
+  
+  func setReturnKeyToDoneForSearchBar (searchBar: UISearchBar) {
+    for subviews in searchBar.subviews {
+      if (subviews.conformsToProtocol(UITextInputTraits)) {
+        let textField = subviews as! UITextField
+        textField.returnKeyType = UIReturnKeyType.Done
+      } else {
+        for subview in subviews.subviews {
+          if (subview.conformsToProtocol(UITextInputTraits)) {
+            let textField = subview as! UITextField
+            textField.returnKeyType = UIReturnKeyType.Done
+          }
+        }
+      }
+    }
+  }
   
   func findHairlineImageViewUnder(view: UIView?) -> UIImageView? {
     if view is UIImageView && view!.bounds.size.height <= 1.0 {
@@ -242,6 +259,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             self.moviesCollectionView.reloadData()
             if self.gridSearchIsActive {
               self.gridSearchBar.becomeFirstResponder()
+              self.setReturnKeyToDoneForSearchBar(self.gridSearchBar)
             }
           }
         }
@@ -308,11 +326,10 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
       filteredMovies = filterMoviesWithSearchText(searchValue)
     }
     
-    
     moviesTableView.reloadData()
     moviesCollectionView.reloadData()
     searchBar.becomeFirstResponder()
-    
+    setReturnKeyToDoneForSearchBar(searchBar)
   }
   
   func searchBarSearchButtonClicked(searchBar: UISearchBar) {
