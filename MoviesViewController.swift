@@ -141,12 +141,11 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   }
   
   func filterMoviesWithSearchText(searchText: String) -> [NSDictionary] {
-    let filteredMovies = self.movies!.filter({ (movie: NSDictionary) -> Bool in
-      let stringMatch = (movie["title"] as! String).rangeOfString(searchText)
-      return (stringMatch != nil)
-    }) as [NSDictionary]
     
-    return filteredMovies
+    let pred =  NSPredicate(format: "title CONTAINS[c] %@", searchText)
+    let foundMovies = movies!.filter({ pred.evaluateWithObject($0)}) as [NSDictionary]
+    
+    return foundMovies
   }
   
   //  MARK: - Initialization
